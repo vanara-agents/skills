@@ -19,6 +19,10 @@
 
 ---
 
+<p align="center">
+  <img src="assets/demo.gif" width="800" alt="Terminal demo: npx vanara doctor scans the repo and recommends items, npx vanara install security-pack deploys six specialists, and the security-auditor catches a SQL injection in review" />
+</p>
+
 **29 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (206 items total).
 
 ```bash
