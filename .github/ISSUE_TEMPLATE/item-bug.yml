@@ -1,0 +1,25 @@
+name: Report a problem in an item
+description: Something in an agent/skill/pack is wrong, stale, or its check fails.
+title: "[Item]: "
+labels: ["item-bug"]
+body:
+  - type: input
+    id: item
+    attributes:
+      label: Which item?
+      placeholder: skills/api-pagination
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong?
+      description: Factual error, broken command, failing script, stale API usage — be specific, quote the line if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it say/do instead?
+    validations:
+      required: false

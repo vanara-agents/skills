@@ -1,0 +1,40 @@
+name: Request an agent or skill
+description: Ask for a specialist that doesn't exist yet — requests shape the catalog roadmap.
+title: "[Request]: "
+labels: ["item-request"]
+body:
+  - type: input
+    id: capability
+    attributes:
+      label: What should it do?
+      description: One line, like you'd type into `npx vanara request "..."`
+      placeholder: a Kafka consumer-lag alerting agent
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Your stack / context
+      description: What are you building, and where would this item earn its keep?
+      placeholder: Node backend with Kafka via kafkajs; we keep missing consumer-lag regressions until production.
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: What should its verification check prove?
+      description: Every catalog item ships a runnable check. What would convince you this item works?
+      placeholder: Given a sample lag report fixture, it flags the two consumers that breach threshold and ignores the healthy ones.
+    validations:
+      required: false
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - agent (a specialist that does a job)
+        - skill (a reference/workflow Claude follows)
+        - pack (a bundle for a whole discipline)
+        - not sure
+    validations:
+      required: true

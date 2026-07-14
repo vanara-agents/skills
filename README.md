@@ -118,7 +118,7 @@ Missing a specialist? Log it in one line — it goes on the roadmap:
 npx vanara request "a Kafka consumer-lag alerting agent"
 ```
 
-Issues and PRs to the free-tier items are welcome. Item format is documented inline (frontmatter + `references/` + `examples/` + `scripts/`).
+Issues and PRs to the free-tier items are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the item anatomy and rules. And every item here is a template: [CUSTOMIZING.md](CUSTOMIZING.md) shows how to fork an agent for your own stack in about 2 minutes.
 
 ## License
 
