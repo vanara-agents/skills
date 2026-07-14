@@ -1,8 +1,23 @@
-# Vanara — free agents, skills & packs for Claude Code
+<div align="center">
 
-[![npm](https://img.shields.io/npm/v/vanara)](https://www.npmjs.com/package/vanara)
-[![license](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-[![catalog](https://img.shields.io/badge/full_catalog-206_items-orange)](https://vanaraagents.com)
+<img src="assets/vanara.png" width="140" alt="Vanara — the coding vanara mascot" />
+
+# Vanara
+
+**🐒 Free agents, skills & packs for Claude Code**
+
+*One subscription. An army of Claude Code agents.*
+
+[![npm](https://img.shields.io/npm/v/vanara?color=FFB000&labelColor=0E0B06)](https://www.npmjs.com/package/vanara)
+[![license](https://img.shields.io/badge/license-Apache--2.0-FFB000?labelColor=0E0B06)](LICENSE)
+[![catalog](https://img.shields.io/badge/full_catalog-206_items-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
+[![checks](https://img.shields.io/badge/verification_checks-163%2F163_passing-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
+
+**[Website](https://vanaraagents.com)** · **[Browse the catalog](https://vanaraagents.com/agents)** · **[Getting started](https://vanaraagents.com/start)** · **[npm](https://www.npmjs.com/package/vanara)** · **[X](https://x.com/VanaraAgents)**
+
+</div>
+
+---
 
 **29 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (206 items total).
 
@@ -108,3 +123,9 @@ Issues and PRs to the free-tier items are welcome. Item format is documented inl
 ## License
 
 [Apache-2.0](LICENSE) — these 29 items are free to use, modify, and redistribute. The premium catalog is licensed separately.
+
+---
+
+<div align="center">
+<sub>🐒 <b>VANARA</b> — the agent army for Claude Code · <a href="https://vanaraagents.com">vanaraagents.com</a> · <a href="https://x.com/VanaraAgents">@VanaraAgents</a> · © 2026 Vanara Agents</sub>
+</div>
