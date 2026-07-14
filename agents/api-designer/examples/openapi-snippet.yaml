@@ -1,0 +1,130 @@
+openapi: 3.1.0
+info:
+  title: Orders API
+  version: "1.0.0"
+  description: >-
+    Worked example of the api-designer conventions — plural-noun resources, accurate
+    status codes, cursor pagination, a single response/error envelope, and idempotent creates.
+servers:
+  - url: https://api.example.com/v1
+security:
+  - bearerAuth: []
+paths:
+  /orders:
+    get:
+      summary: List orders
+      description: Cursor-paginated; limit is capped server-side at 100.
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [open, paid, refunded] } }
+        - { name: sort, in: query, schema: { type: string, example: "-createdAt" } }
+        - { name: limit, in: query, schema: { type: integer, default: 20, maximum: 100 } }
+        - { name: cursor, in: query, schema: { type: string } }
+      responses:
+        "200":
+          description: A page of orders
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OrderList" }
+        "401": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+    post:
+      summary: Create an order
+      description: Accepts an Idempotency-Key so retries do not double-create.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OrderInput" }
+      responses:
+        "201":
+          description: Created
+          headers:
+            Location: { schema: { type: string }, description: URL of the new order }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OrderEnvelope" }
+        "422": { $ref: "#/components/responses/Error" }
+  /orders/{id}:
+    get:
+      summary: Get one order
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The order
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OrderEnvelope" }
+        "404": { $ref: "#/components/responses/Error" }
+  /orders/{id}/refunds:
+    post:
+      summary: Refund an order
+      description: Non-CRUD action modeled as a sub-resource, not POST /refundOrder.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "201": { description: Refund created }
+        "409": { $ref: "#/components/responses/Error" }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    Error:
+      description: Standard error envelope
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+  schemas:
+    Order:
+      type: object
+      properties:
+        id: { type: string, example: "ord_01H..." }
+        status: { type: string, enum: [open, paid, refunded] }
+        total: { type: number }
+        createdAt: { type: string, format: date-time }
+    OrderInput:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              productId: { type: string }
+              quantity: { type: integer }
+    Meta:
+      type: object
+      properties:
+        nextCursor: { type: string, nullable: true }
+        limit: { type: integer }
+        hasMore: { type: boolean }
+    OrderList:
+      type: object
+      properties:
+        data: { type: array, items: { $ref: "#/components/schemas/Order" } }
+        meta: { $ref: "#/components/schemas/Meta" }
+        error: { type: object, nullable: true }
+    OrderEnvelope:
+      type: object
+      properties:
+        data: { $ref: "#/components/schemas/Order" }
+        error: { type: object, nullable: true }
+    ErrorEnvelope:
+      type: object
+      properties:
+        data: { nullable: true }
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: { type: array, items: { type: object } }
+            requestId: { type: string }

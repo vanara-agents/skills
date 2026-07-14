@@ -1,0 +1,27 @@
+{
+  "$comment": "Example migration-runner config with safety guardrails. No secrets: the connection comes from an env var, never hardcoded.",
+  "databaseUrlEnv": "DATABASE_URL",
+  "migrationsDir": "./migrations",
+  "migrationsTable": "schema_migrations",
+  "direction": "up",
+  "safety": {
+    "lockTimeout": "3s",
+    "statementTimeout": "0",
+    "requireDownMigration": true,
+    "transactionPerMigration": true,
+    "disableTransactionForConcurrent": true,
+    "blockIrreversibleWithoutAck": true,
+    "irreversibleStatements": ["DROP COLUMN", "DROP TABLE", "TRUNCATE"]
+  },
+  "backfill": {
+    "runOutsideSchemaTransaction": true,
+    "batchSize": 5000,
+    "sleepMsBetweenBatches": 100,
+    "resumeWhere": "col IS NULL"
+  },
+  "verification": {
+    "dryRunOnCopy": true,
+    "requireBackupBeforeDestructive": true,
+    "checkScript": "node ../scripts/check-migration-reversible.mjs"
+  }
+}
