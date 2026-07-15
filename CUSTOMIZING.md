@@ -50,6 +50,12 @@ cp -r agents/code-reviewer .claude/agents/nextjs-reviewer
 
 Edit or add reference files for your stack — e.g. drop in a `references/nextjs-pitfalls.md` with your team's hard-won rules. The agent reads them while working.
 
+## Ready-made variants
+
+Five worked examples of this exact method live in [`examples/variants/`](examples/variants/) —
+Next.js, Django, Terraform, Kubernetes, and Rails reviewers, each installable with one `curl`.
+Use them directly, or as the pattern for your own.
+
 ## Things worth customizing first
 
 | Base item | Easy high-value variants |
