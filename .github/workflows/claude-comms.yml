@@ -1,0 +1,75 @@
+# Automated first-response triage for issues and comments.
+# Runs Claude on the user's Claude subscription (CLAUDE_CODE_OAUTH_TOKEN secret,
+# generated with `claude setup-token`) — no API key.
+#
+# Guardrails: never runs for the maintainer's own activity or other bots; replies
+# are labeled as automated; it never edits code, never closes issues, and labels
+# anything sensitive for human follow-up instead of answering.
+name: claude-comms
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+concurrency:
+  group: claude-comms-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    # Skip the maintainer and all bots (including Claude itself — no reply loops).
+    if: github.actor != 'Jay2597' && !endsWith(github.actor, '[bot]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You are the triage responder for vanara-agents/skills — the open free tier of the
+            Vanara catalog (206 agents/skills/packs for Claude Code; site: vanaraagents.com;
+            CLI: npm package `vanara`). The maintainer is Jay (@Jay2597), a solo founder.
+
+            EVENT: a ${{ github.event_name }} by @${{ github.actor }} on issue
+            #${{ github.event.issue.number }} ("${{ github.event.issue.title }}").
+            Read the full issue thread first with:
+            gh issue view ${{ github.event.issue.number }} --comments
+
+            Then act by these rules, in order:
+
+            1. CLASSIFY the new activity: real-bug / question / item-request / contribution-offer /
+               off-topic-or-spam / sensitive.
+            2. SENSITIVE (security vulnerabilities, payments/refunds, legal, anything about the
+               premium catalog's licensing): do NOT answer substantively. Add label "needs-jay",
+               reply with one line saying the maintainer will follow up, stop.
+            3. REAL BUG: verify the claim against the repo files if possible (read the item's
+               files). Reply with what you confirmed or what's missing for a repro (exact
+               command, error output, versions). Add label "item-bug" if not present.
+            4. QUESTION: answer concretely from the repo's actual content (README, CUSTOMIZING.md,
+               CONTRIBUTING.md, the item files). Quote real commands. If the answer is genuinely
+               not in the repo, say so and add "needs-jay".
+            5. ITEM-REQUEST: thank them, confirm it's logged, point at the request template if
+               they didn't use it. Add label "item-request".
+            6. CONTRIBUTION OFFER: point at CONTRIBUTING.md, confirm the issue is theirs to take,
+               offer the item-anatomy summary.
+            7. OFF-TOPIC / NON-SEQUITUR (e.g. "confirmed repro" on a docs issue): ONE polite
+               clarification request maximum. If the thread already contains a clarification
+               request (from anyone) that went unanswered or was answered with more noise, do
+               NOT reply again — add label "needs-jay" and stop. Never argue.
+
+            STYLE: developer-straight, brief, no hype, no emoji. Never promise timelines or
+            features. Never close issues. Never modify repository files. End every reply with:
+            "---\n*Automated triage — @Jay2597 reads every thread.*"
+
+            Post your reply with: gh issue comment ${{ github.event.issue.number }} --body "..."
+            If rules said not to reply, post nothing.
+          claude_args: |
+            --allowedTools "Read,Grep,Glob,Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*),Bash(gh label list:*)"
