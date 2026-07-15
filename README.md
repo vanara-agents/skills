@@ -116,13 +116,23 @@ npx vanara unlock <key>    # after subscribing at vanaraagents.com
 
 ## Contributing & requests
 
+**Start here: [`good first issue`](https://github.com/vanara-agents/skills/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)** — scoped, concrete asks (worked examples, new check patterns, stack variants). Each one states exactly what done looks like.
+
+The verify loop is one command — the same one CI runs on every push:
+
+```bash
+node scripts/run-checks.mjs    # all 28 bundled checks; your PR should keep this green
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for item anatomy and rules. Every item here is also a template: [CUSTOMIZING.md](CUSTOMIZING.md) shows how to fork an agent for your own stack in about 2 minutes — and `examples/variants/` is where shared forks land, so yours can too.
+
 Missing a specialist? Log it in one line — it goes on the roadmap:
 
 ```bash
 npx vanara request "a Kafka consumer-lag alerting agent"
 ```
 
-Issues and PRs to the free-tier items are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for the item anatomy and rules. And every item here is a template: [CUSTOMIZING.md](CUSTOMIZING.md) shows how to fork an agent for your own stack in about 2 minutes.
+Merged contributions ship in the npm catalog with credit in the release notes.
 
 ## License
 
