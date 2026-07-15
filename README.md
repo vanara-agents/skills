@@ -11,7 +11,7 @@
 [![npm](https://img.shields.io/npm/v/vanara?color=FFB000&labelColor=0E0B06)](https://www.npmjs.com/package/vanara)
 [![license](https://img.shields.io/badge/license-Apache--2.0-FFB000?labelColor=0E0B06)](LICENSE)
 [![catalog](https://img.shields.io/badge/full_catalog-206_items-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
-[![checks](https://img.shields.io/badge/verification_checks-163%2F163_passing-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
+[![checks](https://github.com/vanara-agents/skills/actions/workflows/checks.yml/badge.svg)](https://github.com/vanara-agents/skills/actions/workflows/checks.yml)
 
 **[Website](https://vanaraagents.com)** · **[Browse the catalog](https://vanaraagents.com/agents)** · **[Getting started](https://vanaraagents.com/start)** · **[npm](https://www.npmjs.com/package/vanara)** · **[X](https://x.com/VanaraAgents)**
 
@@ -39,13 +39,13 @@ Every item here is a packaged directory, not a single markdown file:
 
 - **`references/`** — deep, focused reference docs the agent actually reads while working
 - **`examples/`** — worked examples of the output it should produce
-- **`scripts/`** — runnable verification checks; a deterministic evals runner keeps the ✓ marks below honest
+- **`scripts/`** — runnable verification checks; every one runs in [public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on each push, and `node scripts/run-checks.mjs` runs them all locally. (The full 206-item catalog passes the same runner privately — 163/163 today.)
 - **Memory** — agents write lessons to `.claude/memory/` as they work your codebase and get sharper over time; commit that folder and your team inherits what one agent learned
-- **Orchestration** — the included [`vanara-orchestrate`](skills/vanara-orchestrate) skill chains agents into gated pipelines (reproduce → test → patch → review → commit) where nothing advances past a failed gate
+- **Orchestration** — the included [`vanara-orchestrate`](skills/vanara-orchestrate) skill chains agents into gated pipelines (reproduce → test → patch → review → commit). Precisely: the checks are deterministic scripts, a [checkpoint script](skills/vanara-orchestrate/scripts/checkpoint.mjs) records every stage's pass/fail to an auditable log, and the pipeline instructions stop the agent at a failed gate
 
 ## What's in the free tier
 
-✓ = ships runnable verification checks, currently passing.
+✓ = ships runnable verification checks — [run in public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on every push.
 
 ### Agents (10)
 

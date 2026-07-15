@@ -1,0 +1,26 @@
+name: checks
+
+# Runs every bundled verification check in the repo on every push and PR.
+# The README badge points here — the claim is the run, not our word.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # weekly re-run so the badge never goes stale
+
+permissions:
+  contents: read
+
+jobs:
+  run-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # branch-hygiene check reads real history
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/run-checks.mjs
