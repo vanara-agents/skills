@@ -10,7 +10,7 @@
 
 [![npm](https://img.shields.io/npm/v/vanara?color=FFB000&labelColor=0E0B06)](https://www.npmjs.com/package/vanara)
 [![license](https://img.shields.io/badge/license-Apache--2.0-FFB000?labelColor=0E0B06)](LICENSE)
-[![catalog](https://img.shields.io/badge/full_catalog-206_items-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
+[![catalog](https://img.shields.io/badge/full_catalog-213_items-FFB000?labelColor=0E0B06)](https://vanaraagents.com)
 [![checks](https://github.com/vanara-agents/skills/actions/workflows/checks.yml/badge.svg)](https://github.com/vanara-agents/skills/actions/workflows/checks.yml)
 
 **[Website](https://vanaraagents.com)** · **[Browse the catalog](https://vanaraagents.com/agents)** · **[Getting started](https://vanaraagents.com/start)** · **[npm](https://www.npmjs.com/package/vanara)** · **[X](https://x.com/VanaraAgents)**
@@ -23,7 +23,7 @@
   <img src="assets/demo.gif" width="800" alt="Terminal demo: npx vanara doctor scans the repo and recommends items, npx vanara install security-pack deploys six specialists, and the security-auditor catches a SQL injection in review" />
 </p>
 
-**29 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (206 items total).
+**29 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (213 items total).
 
 ```bash
 npx vanara install code-reviewer     # one agent
@@ -39,7 +39,7 @@ Every item here is a packaged directory, not a single markdown file:
 
 - **`references/`** — deep, focused reference docs the agent actually reads while working
 - **`examples/`** — worked examples of the output it should produce
-- **`scripts/`** — runnable verification checks; every one runs in [public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on each push, and `node scripts/run-checks.mjs` runs them all locally. (The full 206-item catalog passes the same runner privately — 163/163 today.)
+- **`scripts/`** — runnable verification checks; every one runs in [public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on each push, and `node scripts/run-checks.mjs` runs them all locally. (The full 213-item catalog passes the same runner privately — 163/163 today.)
 - **Memory** — agents write lessons to `.claude/memory/` as they work your codebase and get sharper over time; commit that folder and your team inherits what one agent learned
 - **Orchestration** — the included [`vanara-orchestrate`](skills/vanara-orchestrate) skill chains agents into gated pipelines (reproduce → test → patch → review → commit). Precisely: the checks are deterministic scripts, a [checkpoint script](skills/vanara-orchestrate/scripts/checkpoint.mjs) records every stage's pass/fail to an auditable log, and the pipeline instructions stop the agent at a failed gate
 
@@ -107,7 +107,7 @@ The [`vanara` CLI](https://www.npmjs.com/package/vanara) just automates this, tr
 
 ## The full catalog
 
-This repo is 29 of **206 items** — the rest (63 more agents, 80 more skills, 34 more packs, across 28 fields) are in [Vanara Pro](https://vanaraagents.com) at $10/mo: one subscription, everything installable, continuous updates, same no-API-keys model.
+This repo is 29 of **213 items** — the rest (70 more agents, 80 more skills, 34 more packs, across 28 fields) are in [Vanara Pro](https://vanaraagents.com) at $10/mo: one subscription, everything installable, continuous updates, same no-API-keys model.
 
 ```bash
 npx vanara list            # browse everything
