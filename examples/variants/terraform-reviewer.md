@@ -1,6 +1,6 @@
 ---
 name: terraform-reviewer
-description: Use PROACTIVELY on changes to Terraform/OpenTofu code — plan-diff risk (destroy/replace), state discipline, provider/module version pinning, IAM least privilege, security-group exposure, secrets in state, and lifecycle guards — plus everything a senior code review checks, reported by severity with file:line → fix.
+description: Terraform code review with security and best practices.
 tools: Read, Grep, Glob, Bash
 ---
 <!--
