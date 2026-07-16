@@ -23,7 +23,7 @@
   <img src="assets/demo.gif" width="800" alt="Terminal demo: npx vanara doctor scans the repo and recommends items, npx vanara install security-pack deploys six specialists, and the security-auditor catches a SQL injection in review" />
 </p>
 
-**29 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (213 items total).
+**30 production-grade agents, skills, and packs for [Claude Code](https://claude.com/claude-code) — free, Apache-2.0, install with one command.** This is the open free tier of the [Vanara catalog](https://vanaraagents.com) (213 items total).
 
 ```bash
 npx vanara install code-reviewer     # one agent
@@ -107,7 +107,7 @@ The [`vanara` CLI](https://www.npmjs.com/package/vanara) just automates this, tr
 
 ## The full catalog
 
-This repo is 29 of **213 items** — the rest (70 more agents, 80 more skills, 34 more packs, across 28 fields) are in [Vanara Pro](https://vanaraagents.com) at $10/mo: one subscription, everything installable, continuous updates, same no-API-keys model.
+This repo is 30 of **213 items** — the rest (69 more agents, 80 more skills, 34 more packs, across 28 fields) are in [Vanara Pro](https://vanaraagents.com) at $10/mo: one subscription, everything installable, continuous updates, same no-API-keys model.
 
 ```bash
 npx vanara list            # browse everything
@@ -136,7 +136,7 @@ Merged contributions ship in the npm catalog with credit in the release notes.
 
 ## License
 
-[Apache-2.0](LICENSE) — these 29 items are free to use, modify, and redistribute. The premium catalog is licensed separately.
+[Apache-2.0](LICENSE) — these 30 items are free to use, modify, and redistribute. The premium catalog is licensed separately.
 
 ---
 
