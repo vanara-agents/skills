@@ -1,6 +1,6 @@
 ---
 name: rails-reviewer
-description: Use PROACTIVELY on changes to a Ruby on Rails codebase — strong parameters, N+1 queries, callback discipline, safe migrations, object-level authorization (Pundit/CanCanCan), SQL injection in scopes, and background-job idempotency — plus everything a senior code review checks, reported by severity with file:line → fix.
+description: Use on Ruby on Rails code changes for strong params, N+1 queries, callbacks, safe migrations, authz, SQLi, and idempotent jobs — all senior code review checks with fixes.
 tools: Read, Grep, Glob, Bash
 ---
 <!--
