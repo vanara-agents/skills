@@ -2,8 +2,8 @@
 name: vanara-orchestrate
 description: Run a goal end-to-end as a gated pipeline of specialist agents — reproduce → test → patch → review → commit — where nothing advances past a gate until its exit condition holds and the required agent has signed off. Use when a task needs several agents in sequence with checkpoints, not a single one-shot answer.
 type: skill
-version: 1.0.0
-updated: 2026-07-13
+version: 1.0.1
+updated: 2026-07-27
 ---
 
 # vanara-orchestrate — outcomes, not one-shots
@@ -74,3 +74,26 @@ Full stage/gate definitions are in [references/workflows.md](references/workflow
 > empty-email case (gate: test is RED) → `debugger` patches validation (gate: that test is now
 > GREEN) → `code-reviewer` reviews (gate: no blocking findings) → commit. Each stage checkpointed;
 > if review flags a blocking issue, the pipeline loops back to the patch stage, not forward.
+
+## Worked micro-example
+
+A real run of the fix-defect pipeline, gate by gate:
+
+```text
+$ goal: "users report duplicate webhooks after retry"
+
+[gate 1 REPRODUCE] debugger writes a failing test that fires the dup
+                   → RED (good — the bug is now falsifiable)      PASS
+[gate 2 TEST]      test-author hardens it: adds the idempotency-key
+                   contract test the codebase never had            PASS
+[gate 3 PATCH]     fix lands: dedupe on (source_id, delivery_id)
+                   unique index + upsert                           PASS
+[gate 4 REVIEW]    code-reviewer: flags the index migration as
+                   non-concurrent — BLOCKS                         FAIL
+[gate 4 RETRY]     migration rewritten CONCURRENTLY → re-review    PASS
+[gate 5 COMMIT]    checkpoint.mjs logs all five gates; commit cites
+                   the checkpoint id
+```
+
+The point of the transcript: gate 4 FAILING is the system working — a blocked
+stage stops the pipeline instead of shipping a table lock to production.

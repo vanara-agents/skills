@@ -2,8 +2,8 @@
 name: prompt-engineering
 description: A deep, practical guide to engineering reliable LLM prompts — role/context, instructions, few-shot, structured output, chain-of-thought, delimiting untrusted data, injection defense, and evaluation. Includes worked prompts and a runnable output validator.
 type: skill
-version: 2.0.0
-updated: 2026-06-28
+version: 2.0.1
+updated: 2026-07-27
 ---
 # Prompt Engineering
 
@@ -98,3 +98,24 @@ problem may be **retrieval** (use the `rag-patterns` skill to ground the model i
 
 Pairs with the `prompt-engineer` agent, the `ai-engineer` agent, and the `llm-evaluation` and
 `rag-patterns` skills.
+
+## Worked micro-example
+
+Case: a support-classifier prompt at 71% accuracy, "fixed" by prompt roulette
+for two weeks.
+
+```text
+REFACTOR, MEASURED (60-case golden set, accuracy after each change):
+  baseline: vibes-written paragraph prompt              71%
+  + explicit output schema (JSON, enum of 6 labels)     78%  (+7)
+  + 3 few-shot examples, one per confusable pair        86%  (+8)
+  + "if ambiguous, label NEEDS_HUMAN, never guess"      91%  (+5)
+  + chain-of-thought                                    89%  (-2, REVERTED —
+                                                        CoT hurt a classify
+                                                        task; keep for reasoning
+                                                        tasks, not labeling)
+SHIPPED at 91% with the eval in CI — the next model update runs the same 60
+cases before anyone trusts it.
+```
+
+Every change measured, one change at a time, and reverting is a result.

@@ -2,8 +2,8 @@
 name: vanara-route
 description: Given a task, find the best-fit installed Vanara agent and run it. Reads the installed agent roster, scores each by how well its stated purpose matches the task, delegates to the strongest match, and — when nothing fits — records the gap so you can request the missing agent. Use when you are not sure which specialist should handle a job, or you want the toolkit to pick for you.
 type: skill
-version: 1.0.0
-updated: 2026-07-13
+version: 1.0.1
+updated: 2026-07-27
 ---
 
 # vanara-route — the dispatcher
@@ -85,3 +85,23 @@ See [references/gap-reporting.md](references/gap-reporting.md) for the privacy m
 
 See [references/matching-heuristics.md](references/matching-heuristics.md) for the full scoring
 rubric and worked examples.
+
+## Worked micro-example
+
+```text
+$ task: "our checkout p99 doubled since Tuesday"
+
+ROUTE SCORING (installed items):
+  debugger              0.86  ← symptom is a regression, not a design ask
+  perf-optimizer        0.79     (would optimize; can't explain "since Tuesday")
+  sql-index-tuning      0.61     (plausible cause, wrong entry point)
+  incident-responder    0.44     (no user-facing outage declared)
+
+DECISION: debugger — a dated regression wants hypothesis-driven bisection
+first; perf work without the culprit is guessing with a profiler.
+HANDOFF: debugger gets the task + the "since Tuesday" anchor + last deploys.
+```
+
+Routing is a ranked decision with reasons, and the runner-up matters: if
+debugger's bisection lands in a query plan, sql-index-tuning is next, and the
+route log already says why.

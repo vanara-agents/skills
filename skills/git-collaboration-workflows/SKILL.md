@@ -2,8 +2,8 @@
 name: git-collaboration-workflows
 description: Run git collaboration that scales — trunk-based vs git-flow decided by deploy cadence, branch protection and required checks, PR sizing and review etiquette, monorepo vs polyrepo trade-offs, release branches and hotfixes, and history hygiene with disciplined merges.
 type: skill
-version: 1.0.0
-updated: 2026-07-10
+version: 1.0.1
+updated: 2026-07-27
 ---
 # Git Collaboration Workflows
 

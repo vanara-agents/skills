@@ -2,8 +2,8 @@
 name: secrets-management
 description: Handle secrets safely across the lifecycle — keep them out of source, load from env or a secret manager, scope to least privilege, encrypt in transit and at rest, rotate on a schedule, and respond fast when one leaks. Deep reference with runbooks, examples, and a runnable leak scanner.
 type: skill
-version: 2.0.0
-updated: 2026-06-29
+version: 2.0.1
+updated: 2026-07-27
 ---
 # Secrets Management
 
@@ -132,3 +132,21 @@ so there is no downtime window. The full step-by-step is in
 Pairs with the `secure-auth` skill (where signing keys and session secrets come from), the `owasp-top10`
 skill (A07 identification/auth failures, A02 cryptographic failures), and the `security-auditor` agent for
 a full credential-handling review.
+
+## Worked micro-example
+
+Drill: a Slack webhook URL just landed in a public repo commit.
+
+```text
+CLOCK STARTS:
+  0-5m    revoke at the source (Slack app config) — rotation BEFORE cleanup;
+          the secret is burned the moment it was pushed, not when found
+  5-15m   sweep for siblings: same commit, same author, same week
+          (leaks travel in packs — found: a Sentry DSN in the same PR)
+  15-30m  history rewrite is OPTIONAL cleanup, revocation is the fix —
+          scrapers saw it in seconds; git filter-repo only tidies appearances
+  30-60m  close the hole: pre-commit scan hook + CI secret-scan gate
+          (the same patterns scan-secrets.mjs ships)
+POSTMORTEM Q: why was a live credential in an env a developer could paste
+from? → move to short-lived tokens minted at deploy; the class dies.
+```

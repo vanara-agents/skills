@@ -2,8 +2,8 @@
 name: security-pack
 description: Build and ship secure software — threat modeling at design time, OWASP code audits, dependency/secret scanning, and secure auth and secrets handling, sequenced into one shift-left workflow.
 type: pack
-version: 2.0.0
-updated: 2026-07-06
+version: 2.0.1
+updated: 2026-07-27
 agents: [threat-modeler, security-auditor, vuln-scanner]
 skills: [owasp-top10, secure-auth, secrets-management]
 ---
@@ -126,3 +126,8 @@ playbook that connects a threat model to concrete fixes. Two complete runs are i
   audited, tested remediations.
 - `examples/threat-model-then-audit.md` — a feature threat-modeled at design time, then audited.
 - `examples/owasp-vuln-triage-and-fix.md` — an OWASP-class vulnerability triaged and remediated.
+
+## Pairs with
+
+- [`secure-delivery-pack`](../secure-delivery-pack) — operationalizes these audits into CI.
+- [`compliance-grc-pack`](../compliance-grc-pack) — turns security work into audit evidence.

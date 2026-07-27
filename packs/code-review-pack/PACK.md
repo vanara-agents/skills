@@ -2,8 +2,8 @@
 name: code-review-pack
 description: Review pull requests faster and better — automated first-pass review, PR summaries reviewers can trust, healthy git workflow settings, conventional history, and query-performance checks, sequenced into one review pipeline.
 type: pack
-version: 1.0.0
-updated: 2026-07-10
+version: 1.0.2
+updated: 2026-07-27
 agents: [code-reviewer, pr-summarizer]
 skills: [git-collaboration-workflows, conventional-commits, sql-index-tuning]
 ---

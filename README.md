@@ -39,7 +39,7 @@ Every item here is a packaged directory, not a single markdown file:
 
 - **`references/`** — deep, focused reference docs the agent actually reads while working
 - **`examples/`** — worked examples of the output it should produce
-- **`scripts/`** — runnable verification checks; every one runs in [public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on each push, and `node scripts/run-checks.mjs` runs them all locally. (The full 213-item catalog passes the same runner privately — 163/163 today.)
+- **`scripts/`** — runnable verification checks; every one runs in [public CI](https://github.com/vanara-agents/skills/actions/workflows/checks.yml) on each push, and `node scripts/run-checks.mjs` runs them all locally. (The full 213-item catalog passes the same runner privately — 170/170 today.)
 - **Memory** — agents write lessons to `.claude/memory/` as they work your codebase and get sharper over time; commit that folder and your team inherits what one agent learned
 - **Orchestration** — the included [`vanara-orchestrate`](skills/vanara-orchestrate) skill chains agents into gated pipelines (reproduce → test → patch → review → commit). Precisely: the checks are deterministic scripts, a [checkpoint script](skills/vanara-orchestrate/scripts/checkpoint.mjs) records every stage's pass/fail to an auditable log, and the pipeline instructions stop the agent at a failed gate
 
