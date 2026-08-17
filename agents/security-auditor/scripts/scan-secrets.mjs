@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Runnable check: regex-scans a code string for hardcoded secrets (AWS access keys,
-// generic/bearer API tokens, Stripe-style live keys, and PEM private-key blocks).
+// generic/bearer API tokens, Stripe-style live keys, PEM private-key blocks,
+// GitHub tokens, and Slack tokens/incoming webhooks).
 // Zero dependencies — Node built-ins only. Mirrors the --selftest convention of the
 // catalog's check-envelope.mjs (exit 0 = clean/all-expected, 1 = secret found/failure).
 //
@@ -23,6 +24,10 @@ const RULES = [
   ['Bearer token literal', 'HIGH', /\bBearer\s+[0-9a-zA-Z._\-]{20,}\b/],
   ['Private key block (PEM)', 'CRITICAL', /-----BEGIN(?:\s+\w+)?\s+PRIVATE KEY-----/],
   ['Slack token', 'HIGH', /\bxox[baprs]-[0-9A-Za-z-]{10,}\b/],
+  ['GitHub token', 'CRITICAL',
+    /\b(?:ghp|gho)_[A-Za-z0-9]{36}\b|\bgithub_pat_[A-Za-z0-9]{22}_[A-Za-z0-9]{59}\b/],
+  ['Slack incoming webhook', 'HIGH',
+    /hooks\.slack\.com\/services\/T[0-9A-Z]{8,}\/B[0-9A-Z]{8,}\/[0-9A-Za-z]{20,}/],
 ];
 
 export function scanSecrets(code) {
@@ -61,8 +66,15 @@ function selftest() {
     leaky_stripe: `const key = "${'sk_live_' + '4eC39HqLyjWD' + 'arjtT1zdp7dc'}";`,
     leaky_token: 'api_key: "abc123DEF456ghi789JKL"',
     leaky_pem: '-----BEGIN RSA PRIVATE KEY-----\nMIIE...fake...\n-----END RSA PRIVATE KEY-----',
+    // GitHub/Slack fixtures are also runtime-assembled — never a live-format literal.
+    leaky_github_classic: `const t = "${'ghp_' + 'AbCd1234'.repeat(4) + 'aBcD'}";`,
+    leaky_github_finegrained:
+      `token = "${'github_pat_' + 'a1B2c3D4e5F6g7H8i9J0k1' + '_' + 'zY'.repeat(29) + 'x'}"`,
+    leaky_slack_webhook:
+      `const url = "https://${'hooks.slack' + '.com/services/'}T00000000/B00000000/${'XXXXxxxx'.repeat(3)}";`,
     clean_config: 'const key = process.env.API_KEY; // loaded from secret manager',
     clean_prose: 'This module reads the bearer token from the Authorization header at runtime.',
+    clean_github_env: 'const token = process.env.GITHUB_TOKEN; // gh auth, never hardcoded',
   };
   let allExpected = true;
   for (const [name, code] of Object.entries(cases)) {
