@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 // Runnable check for the opaque-cursor contract (encode -> decode -> tamper -> version).
-// Usage: node scripts/check-cursor.mjs   (exits 0 on pass, 1 on first failure)
+// Usage: node scripts/check-cursor.mjs [--selftest]   (exits 0 on pass, 1 on first failure)
+// Both modes run the same assertions; --selftest exists for the repo-wide run-checks
+// convention. Importing the module (for encodeCursor/decodeCursor) runs nothing.
 import { createHmac } from 'node:crypto';
+import { realpathSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const KEY = 'demo-key-rotate-me';
 const VERSION = 'v1';
@@ -27,25 +31,36 @@ export function decodeCursor(token) {
   }
 }
 
-let failed = 0;
-const check = (name, ok) => {
-  console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}`);
-  if (!ok) failed = 1;
-};
+function runChecks() {
+  let failed = 0;
+  const check = (name, ok) => {
+    console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}`);
+    if (!ok) failed = 1;
+  };
 
-// Round trip preserves full timestamp precision and the tiebreaker.
-const token = encodeCursor(['2026-07-01T12:00:00.412Z', 4711]);
-const out = decodeCursor(token);
-check('round-trip', out.keyValues?.[1] === 4711 && out.keyValues?.[0].endsWith('.412Z'));
-check('url-safe (no + / =)', !/[+/=]/.test(token));
+  // Round trip preserves full timestamp precision and the tiebreaker.
+  const token = encodeCursor(['2026-07-01T12:00:00.412Z', 4711]);
+  const out = decodeCursor(token);
+  check('round-trip', out.keyValues?.[1] === 4711 && out.keyValues?.[0].endsWith('.412Z'));
+  check('url-safe (no + / =)', !/[+/=]/.test(token));
 
-// Tampered payload must be rejected, not half-parsed.
-const [v, p, m] = token.split('.');
-check('tamper detected', decodeCursor(`${v}.${p.slice(0, -2)}xx.${m}`).error === 'CURSOR_INVALID');
+  // Tampered payload must be rejected, not half-parsed.
+  const [v, p, m] = token.split('.');
+  check('tamper detected', decodeCursor(`${v}.${p.slice(0, -2)}xx.${m}`).error === 'CURSOR_INVALID');
 
-// Unknown version and garbage are client errors, never crashes.
-check('unknown version rejected', decodeCursor(`v9.${p}.${m}`).error === 'CURSOR_INVALID');
-check('garbage rejected', decodeCursor('not-a-cursor').error === 'CURSOR_INVALID');
-check('empty rejected', decodeCursor('').error === 'CURSOR_INVALID');
+  // Unknown version and garbage are client errors, never crashes.
+  check('unknown version rejected', decodeCursor(`v9.${p}.${m}`).error === 'CURSOR_INVALID');
+  check('garbage rejected', decodeCursor('not-a-cursor').error === 'CURSOR_INVALID');
+  check('empty rejected', decodeCursor('').error === 'CURSOR_INVALID');
 
-process.exit(failed);
+  return failed;
+}
+
+function isDirectRun() {
+  try {
+    return Boolean(process.argv[1]) &&
+      realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch { return false; }
+}
+
+if (isDirectRun()) process.exit(runChecks());
